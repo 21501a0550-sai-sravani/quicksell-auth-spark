@@ -1,6 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { MessageCircle } from "lucide-react";
 
 interface Product {
   id: string;
@@ -25,6 +27,11 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, className }: ProductCardProps) => {
   const sellerName = product.profiles?.full_name || product.profiles?.username || 'Anonymous Seller';
+
+  const handleContact = () => {
+    // For now, just show an alert - in a real app this would open a messaging system
+    alert(`Contact ${sellerName} about "${product.title}"`);
+  };
 
   return (
     <Card className={cn(
@@ -83,11 +90,22 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
             </div>
           </div>
           
-          {product.category && (
-            <Badge variant="outline" className="text-xs">
-              {product.category}
-            </Badge>
-          )}
+          <div className="flex items-center justify-between pt-3">
+            {product.category && (
+              <Badge variant="outline" className="text-xs">
+                {product.category}
+              </Badge>
+            )}
+            <Button 
+              size="sm" 
+              variant="outline"
+              onClick={handleContact}
+              className="ml-auto text-xs"
+            >
+              <MessageCircle className="h-3 w-3 mr-1" />
+              Contact
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -3,6 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { ProductCard } from '@/components/ProductCard';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { AddProductModal } from '@/components/AddProductModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -30,6 +31,7 @@ export default function Dashboard() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showAddModal, setShowAddModal] = useState(false);
   const { user, signOut } = useAuth();
   const { toast } = useToast();
 
@@ -116,7 +118,7 @@ export default function Dashboard() {
             </div>
             
             <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={() => setShowAddModal(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Sell Item
               </Button>
@@ -177,6 +179,13 @@ export default function Dashboard() {
           </div>
         )}
       </main>
+
+      {/* Add Product Modal */}
+      <AddProductModal
+        open={showAddModal}
+        onOpenChange={setShowAddModal}
+        onProductAdded={fetchProducts}
+      />
     </div>
   );
 }
